@@ -15,13 +15,13 @@ Assumptions:
 1. All endpoint names are unique
 2. All data_source_ids from the self hosted redash will be converged into a single endpoint to ensure queries work
 3. Query objects must be created for visualziations to exist, and dashboard shells must exists before widgets can be inserted into them
-
+4. Visualizations Ids are global across queries, I need to test this assumption!!
 
 ### TO DO:
 
 > Check for duplicate query names, and handle by either overwriting or creating new query name - v2
 > Handle the fully qualified table naming changes - i.e. map all table names to a database and rename queries (stretch goal)
-
+> Handle layout data
 """
 
 import requests
@@ -74,6 +74,8 @@ with open('redash_export/all_redash_dashboards.json') as dd:
     dashboards = json.load(dd)
 
 
+
+visualization_id_mappings = {}
 
 ############# Migrate Query and visualization obects #############
 
@@ -132,6 +134,14 @@ for q, i in enumerate(queries):
 
                     data = json.dumps(active_visualization)
                     resp = requests.post(f"{dbsql_url}visualizations", data=data, headers=headers).json()
+                    
+                    ### Save old and new visualization Id
+                    old_viz_id = v.get("id")
+                    new_viz_id = resp.get("id")
+
+                    visualization_id_mappings[old_viz_id] = new_viz_id
+
+                    print(f"Added Visualization with old id: {old_viz_id} and generated new Id: {new_viz_id}")
 
                 print(f"Successfully pushed visualiztions to query {q_name}!")
 
@@ -149,10 +159,11 @@ for q, i in enumerate(queries):
         print(f"Failed to push {q_name} with error: {msg}")
 
 
+
 ############# Migrate Dashboard and Widget obects #############
 
-#### Upload all dashboards associated with the queries after they finish
-"""
+##### Upload all dashboards associated with the widgets which are tied to the visualizations
+
 for d, i in enumerate(dashboards):
 
     new_dashboard = {}
@@ -161,31 +172,66 @@ for d, i in enumerate(dashboards):
     d_name = active_dashboard.get("name")
 
     ## Get Mapped data source Id of where you want the query to point to in DBSQL (assumes that data source already exists, cant have a query without a Data source)
-
-    redash_data_source_id = active_dashboard.get("data_source_id")
+    new_dashboard = {
+                    "name": None,
+                    "layout": None,
+                    "dashboard_filters_enabled": None,
+                    "widgets": None,
+                    "is_trashed": None,
+                    "is_draft": None,
+                    "tags": None
+                    }
+   
     #print(f"Redash Data Source Id {redash_data_source_id}")
 
-    dbsql_data_source_id = data_source_mappings.get("redash_data_sources").get(str(redash_data_source_id)).get("dbsql_data_source_id")
-    print(f"Pushing Redash Query: {q_name} from Redash Data Source Id: {redash_data_source_id} to DataSQL Data Source Id: {dbsql_data_source_id}...")
+    print(f"Pushing Redash Dashboard: {d_name} from Redash to DataSQL...")
 
-    new_query["data_source_id"] = dbsql_data_source_id
-    new_query["query"] = active_query.get("query")
-    new_query["name"] = active_query.get("name")
-    new_query["description"] = active_query.get("description") or ""
-    new_query["schedule"] = active_query.get("schedule")
-    new_query["options"] = active_query.get("options")
-    new_query["visualizations"] = active_query.get("visualizations")
+    new_dashboard["name"] = active_dashboard.get("name")
+    new_dashboard["layout"] = active_dashboard.get("layout")
+    new_dashboard["dashboard_filters_enabled"] = active_dashboard.get("dashboard_filters_enabled")
+    new_dashboard["widgets"] = active_dashboard.get("widgets") or []
+    new_dashboard["is_trashed"] = active_dashboard.get("is_trashed")
+    new_dashboard["is_draft"] = active_dashboard.get("is_draft")
+    new_dashboard["tags"] = active_dashboard.get("tags") or ["Migrated from Redash"]
 
     ## Submit Query to API in DBSQL
-    new_query_json = json.dumps(new_query)
+    new_dashboard_json = json.dumps(new_dashboard)
     try:
-        requests.post(f"{dbsql_url}queries", data=new_query_json, headers=headers)
-        print(f"Successfully pushed query {q_name} to Databricks SQL!")
+        resp = requests.post(f"{dbsql_url}dashboards", data=new_dashboard_json, headers=headers).json()
+        resp_dashboardid = resp.get("id")
+
+        print(f"Successfully pushed dashboard {d_name} to Databricks SQL with new Id: {resp_dashboardid} !")
     except Exception as e:
         msg = str(e)
-        print(f"Failed to push {q_name} with error: {msg}")
+        print(f"Failed to push dashboard {d_name} with error: {msg}")
 
-"""
+
+    ##### For each dashboard, add all the widgets in the dashboard
+
+    for widget in new_dashboard["widgets"]:
+
+        active_widget = {"dashboard_id": "",
+                        "visualization_id": "",
+                        "text":"",
+                        "options":"",
+                        "width":1
+                        }
+
+        #### Need to get new visualization Id from old
+
+        old_id = widget.get("visualization").get("id")
+        new_id = visualization_id_mappings.get(old_id)
+
+        active_widget["dashboard_id"] = resp_dashboardid
+        active_widget["visualization_id"] = new_id
+        active_widget["text"] = widget.get("visualization").get("text")
+        active_widget["options"] = widget.get("options") or ""
+        active_widget["width"] = widget.get("visualization").get("width") or 1
+
+        data = json.dumps(active_widget)
+        resp = requests.post(f"{dbsql_url}widgets", data=data, headers=headers).json()
+
+        print(f"Added widget with new widget Id: {resp.get('id')}")
 
 
 

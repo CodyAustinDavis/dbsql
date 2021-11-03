@@ -241,9 +241,12 @@ def main(config):
 
 
 if __name__ == "__main__":
+
+    clean_or_raw = input("Run in the following query modes cleaned|raw : ")
     main(config)
 
     f.close()
+
 
 
 

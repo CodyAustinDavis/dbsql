@@ -1,6 +1,6 @@
 {"redash_url": "<redash-url>",
 "redash_api_key": "<redash-api-key",
 "databricks_sql_url": "https://<workspace>/api/2.0/preview/sql/",
-"databricks_sql_token": "<token>"
+"databricks_sql_token": "<token>",
+"databricks_sql_endpoint_name": "<endpoint name>"
 }
-

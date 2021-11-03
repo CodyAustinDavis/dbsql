@@ -2,7 +2,7 @@
     {"is_archived": false, 
     "updated_at": "2021-11-01T15:37:05.267Z", 
     "is_favorite": false, 
-    "query": "SELECT \n12002304 AS TotalSalesThisYear,\n13002101 AS TotalSalesThisTimeLastYear,\nCAST(-7.69 AS decimal) AS PercentDifferentThisTimeLastYear,\n'Below Target' AS SalesQuotaStatus,\n'Cody' AS AccountOwner", 
+    "query": "SELECT \n12002304 AS TotalSalesThisYear,\n strpos(13002101) AS TotalSalesThisTimeLastYear,\nCAST(-7.69 AS decimal) AS PercentDifferentThisTimeLastYear,\n'Below Target' AS SalesQuotaStatus,\n'Cody' AS AccountOwner FROM parquet_parquet.OldTable", 
     "id": 1, 
     "description": null, 
     "tags": [], 

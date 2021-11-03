@@ -1,0 +1,152 @@
+{
+    "1": {
+        "is_archived": false,
+        "updated_at": "2021-11-01T15:37:05.267Z",
+        "is_favorite": false,
+        "query": "select \n12002304 as totalsalesthisyear,\n instr(13002101) as totalsalesthistimelastyear,\ncast(-7.69 as decimal) as percentdifferentthistimelastyear,\n'below target' as salesquotastatus,\n'cody' as accountowner from codydemoes.c_event.newtable",
+        "id": 1,
+        "description": null,
+        "tags": [],
+        "version": 1,
+        "query_hash": "4b702670ecf0894cd8c0af701b6cf98d",
+        "api_key": "OVyfniYFDDUq5UPOzSdOfZysi93tVGMcujSQ7aIw",
+        "data_source_id": 1,
+        "is_safe": true,
+        "latest_query_data_id": 7,
+        "schedule": null,
+        "user": {
+            "auth_type": "password",
+            "is_disabled": false,
+            "updated_at": "2021-11-01T19:27:22.048Z",
+            "profile_image_url": "https://www.gravatar.com/avatar/f2bfb7a57fe7098a6f31b3da62b219d3?s=40&d=identicon",
+            "is_invitation_pending": false,
+            "groups": [
+                1,
+                2
+            ],
+            "id": 1,
+            "name": "Cody Davis",
+            "created_at": "2021-11-01T15:19:29.715Z",
+            "disabled_at": null,
+            "is_email_verified": true,
+            "active_at": "2021-11-01T19:27:00Z",
+            "email": "cody.davis@databricks.com"
+        },
+        "is_draft": false,
+        "can_edit": true,
+        "name": "TestSalesQuery",
+        "created_at": "2021-11-01T15:29:23.355Z",
+        "last_modified_by": {
+            "auth_type": "password",
+            "is_disabled": false,
+            "updated_at": "2021-11-01T19:27:22.048Z",
+            "profile_image_url": "https://www.gravatar.com/avatar/f2bfb7a57fe7098a6f31b3da62b219d3?s=40&d=identicon",
+            "is_invitation_pending": false,
+            "groups": [
+                1,
+                2
+            ],
+            "id": 1,
+            "name": "Cody Davis",
+            "created_at": "2021-11-01T15:19:29.715Z",
+            "disabled_at": null,
+            "is_email_verified": true,
+            "active_at": "2021-11-01T19:27:00Z",
+            "email": "cody.davis@databricks.com"
+        },
+        "visualizations": [
+            {
+                "description": "",
+                "created_at": "2021-11-01T15:29:23.355Z",
+                "updated_at": "2021-11-01T15:29:23.355Z",
+                "id": 1,
+                "type": "TABLE",
+                "options": {},
+                "name": "Table"
+            },
+            {
+                "description": "",
+                "created_at": "2021-11-01T15:33:24.833Z",
+                "updated_at": "2021-11-01T15:33:24.833Z",
+                "id": 4,
+                "type": "COUNTER",
+                "options": {
+                    "tooltipFormat": "0,0.000",
+                    "rowNumber": 1,
+                    "stringDecChar": ".",
+                    "stringDecimal": 0,
+                    "counterColName": "AccountOwner",
+                    "counterLabel": "",
+                    "stringThouSep": ",",
+                    "targetRowNumber": 1
+                },
+                "name": "Account Owner"
+            },
+            {
+                "description": "",
+                "created_at": "2021-11-01T15:30:12.024Z",
+                "updated_at": "2021-11-01T15:37:38.942Z",
+                "id": 2,
+                "type": "COUNTER",
+                "options": {
+                    "tooltipFormat": "0,0.000",
+                    "targetColName": "TotalSalesThisTimeLastYear",
+                    "formatTargetValue": true,
+                    "rowNumber": 1,
+                    "stringDecChar": ".",
+                    "stringSuffix": "",
+                    "stringDecimal": 0,
+                    "counterColName": "TotalSalesThisYear",
+                    "counterLabel": "",
+                    "stringThouSep": ",",
+                    "targetRowNumber": 1
+                },
+                "name": "Total Sales This Year"
+            },
+            {
+                "description": "",
+                "created_at": "2021-11-01T15:32:41.852Z",
+                "updated_at": "2021-11-01T15:37:49.194Z",
+                "id": 3,
+                "type": "COUNTER",
+                "options": {
+                    "tooltipFormat": "0,0.000",
+                    "targetColName": "",
+                    "formatTargetValue": true,
+                    "rowNumber": 1,
+                    "stringDecChar": ".",
+                    "stringDecimal": 0,
+                    "counterColName": "TotalSalesThisTimeLastYear",
+                    "counterLabel": "",
+                    "stringThouSep": ",",
+                    "targetRowNumber": 1
+                },
+                "name": "Sales This Time Last Year"
+            },
+            {
+                "description": "",
+                "created_at": "2021-11-01T15:33:54.905Z",
+                "updated_at": "2021-11-01T15:38:07.238Z",
+                "id": 5,
+                "type": "COUNTER",
+                "options": {
+                    "tooltipFormat": "0,0.000",
+                    "targetColName": "",
+                    "formatTargetValue": true,
+                    "rowNumber": 1,
+                    "stringDecChar": ".",
+                    "stringSuffix": "%",
+                    "stringDecimal": 0,
+                    "counterColName": "PercentDifferentThisTimeLastYear",
+                    "counterLabel": "",
+                    "stringThouSep": ",",
+                    "targetRowNumber": 1
+                },
+                "name": "Sales Status"
+            }
+        ],
+        "options": {
+            "parameters": []
+        }
+    }
+}

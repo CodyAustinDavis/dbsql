@@ -1,0 +1,5 @@
+{"DBSQL_URL":"https://e2-demo-field-eng.cloud.databricks.com",
+"REDASH_URL":"http://44.203.155.230/",
+"S3_BUCKET_NAME":"oetrta",
+"DESTINATION_PREFIX":"codyaustindavis"
+}
